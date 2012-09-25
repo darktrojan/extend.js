@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="a">
+	<div id="b" class="x z">
+		<div id="c" class="z">
+			<div id="d"></div>
+		</div>
+	</div>
+</div>
+
+<pre id="output"></pre>
+
+<!--[if IE 8]><script src="shim.js"></script><![endif]-->
+<script src="extend.js"></script>
+<script>
+
+var output = $('output');
+
+var passCount = 0, failCount = 0;
+
+function is(arg1, arg2) {
+	if (arg1 === arg2) {
+		output.innerHTML += arg1 + ' === ' + arg2 + '<br/>';
+		passCount++;
+	} else {
+		output.innerHTML += arg1 + ' !== ' + arg2 + '<br/>';
+		failCount++;
+	}
+}
+
+var a = $('a');
+var b = $('b');
+var c = $('c');
+var d = $('d');
+
+is(a.ancestor('lol'), null);
+is(a.ancestor('body'), document.body);
+is(a.ancestor('html'), document.documentElement);
+is(b.ancestor('div'), a);
+is(b.ancestor('div#a'), a);
+is(b.ancestor('div#b'), null);
+is(b.ancestor('div.y'), null);
+is(b.ancestor('div.z'), null);
+is(c.ancestor('div'), b);
+is(c.ancestor('div#a'), a);
+is(c.ancestor('div#b'), b);
+is(c.ancestor('div.x'), b);
+is(c.ancestor('div.y'), null);
+is(c.ancestor('div.z'), b);
+is(d.ancestor('div'), c);
+is(d.ancestor('div#a'), a);
+is(d.ancestor('div#b'), b);
+is(d.ancestor('div.x'), b);
+is(d.ancestor('div.y'), null);
+is(d.ancestor('div.z'), c);
+is(d.ancestor('div.x.z'), b);
+is(d.ancestor('div.z.x'), b);
+is(d.ancestor(''), c);
+is(d.ancestor('#a'), a);
+is(d.ancestor('#b'), b);
+is(d.ancestor('.x'), b);
+is(d.ancestor('.y'), null);
+is(d.ancestor('.z'), c);
+is(d.ancestor('.x.z'), b);
+is(d.ancestor('.z.x'), b);
+is(d.ancestor('omg cheese'), null);
+
+output.innerHTML += '<hr/>Passed: ' + passCount + ' Failed: ' + failCount;
+
+</script>
+
+</body>
+</html>

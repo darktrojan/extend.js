@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="test"></div>
+
+<pre id="output"></pre>
+
+<!--[if IE 8]><script src="shim.js"></script><![endif]-->
+<script src="extend.js"></script>
+<script>
+
+var test = $('test');
+var output = $('output');
+
+var passCount = 0, failCount = 0;
+
+function is(arg1, arg2) {
+	if (arg1 === arg2) {
+		output.innerHTML += arg1 + ' === ' + arg2 + '<br/>';
+		passCount++;
+	} else {
+		output.innerHTML += arg1 + ' !== ' + arg2 + '<br/>';
+		failCount++;
+	}
+}
+
+function testFunc1() {}
+function testFunc2() {}
+function testFunc3() {}
+
+var a = test.append('div#test1');
+addHandlers({
+	'event1': { '#test1': testFunc1 }
+});
+is(a.onevent1, testFunc1);
+is(a.onevent2, undefined);
+addHandlers({
+	'event2': { '#test1': testFunc2 }
+});
+is(a.onevent1, testFunc1);
+is(a.onevent2, testFunc2);
+
+test.clearChildNodes();
+
+var b = test.appendMany([['div.test2'], ['div.test2']]);
+addHandlers({
+	'event2': { '.test2': testFunc2 }
+});
+is(b[0].onevent2, testFunc2);
+is(b[1].onevent2, testFunc2);
+
+test.clearChildNodes();
+
+var c = test.appendMany([['div#test1'], ['div.test2'], ['div.test2']]);
+addHandlers({
+	'event1': { '#test1': testFunc1 },
+	'event2': { '.test2': testFunc2 }
+});
+is(c[0].onevent1, testFunc1);
+is(c[0].onevent2, undefined);
+is(c[1].onevent1, undefined);
+is(c[1].onevent2, testFunc2);
+is(c[2].onevent1, undefined);
+is(c[2].onevent2, testFunc2);
+
+test.clearChildNodes();
+
+var d = test.appendMany([['div#test1'], ['div.test2'], ['div.test2']]);
+addHandlers({
+	'event1': { '#test1': testFunc1, '.test2': testFunc2 },
+	'event2': { '.test2': testFunc3 }
+});
+is(d[0].onevent1, testFunc1);
+is(d[0].onevent2, undefined);
+is(d[1].onevent1, testFunc2);
+is(d[1].onevent2, testFunc3);
+is(d[2].onevent1, testFunc2);
+is(d[2].onevent2, testFunc3);
+
+test.clearChildNodes();
+
+var e = test.append('div#test1.test2');
+addHandlers({
+	'event1': { '#test1': testFunc1 },
+	'event2': { '.test2': testFunc2 }
+});
+is(e.onevent1, testFunc1);
+is(e.onevent2, testFunc2);
+addHandlers({
+	'event3': { 'body > div#test > div': testFunc3 }
+})
+is(e.onevent3, testFunc3);
+
+test.clearChildNodes();
+
+output.innerHTML += '<hr/>Passed: ' + passCount + ' Failed: ' + failCount;
+
+</script>
+</body>
+</html>

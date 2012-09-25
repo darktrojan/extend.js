@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<pre id="output"></pre>
+
+<!--[if IE 8]><script src="shim.js"></script><![endif]-->
+<script src="extend.js"></script>
+<script>
+
+var output = $('output');
+
+var passCount = 0, failCount = 0;
+
+function is(arg1, arg2) {
+	if (arg1 === arg2) {
+		output.innerHTML += arg1 + ' === ' + arg2 + '<br/>';
+		passCount++;
+	} else {
+		output.innerHTML += arg1 + ' !== ' + arg2 + '<br/>';
+		failCount++;
+	}
+}
+
+var e = createElement('div');
+is(e.localName, 'div');
+is(e.id, '');
+is(e.className, '');
+
+e = createElement('div#id');
+is(e.localName, 'div');
+is(e.id, 'id');
+is(e.className, '');
+
+e = createElement('div.class1');
+is(e.localName, 'div');
+is(e.id, '');
+is(e.className, 'class1');
+
+e = createElement('div.class1.class2');
+is(e.localName, 'div');
+is(e.id, '');
+is(e.className, 'class1 class2');
+
+e = createElement('div#id.class1');
+is(e.localName, 'div');
+is(e.id, 'id');
+is(e.className, 'class1');
+
+e = createElement('div#id.class1.class2');
+is(e.localName, 'div');
+is(e.id, 'id');
+is(e.className, 'class1 class2');
+
+e = createElement('div', 'test');
+is(e.localName, 'div');
+is(e.innerHTML, 'test');
+
+e = createElement('div', null, { 'a': 'b', 'c': 'd' });
+is(e.localName, 'div');
+is(e.innerHTML, '');
+is(e.getAttribute('a'), 'b');
+is(e.getAttribute('c'), 'd');
+
+e = createElement('label', null, { 'class': 'b', 'for': 'd' });
+is(e.localName, 'label');
+is(e.innerHTML, '');
+is(e.getAttribute('class'), 'b');
+is(e.className, 'b');
+is(e.getAttribute('for'), 'd');
+is(e.htmlFor, 'd');
+
+output.innerHTML += '<hr/>Passed: ' + passCount + ' Failed: ' + failCount;
+
+</script>
+</body>
+</html>

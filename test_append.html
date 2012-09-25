@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="test"></div>
+
+<pre id="output"></pre>
+
+<!--[if IE 8]><script src="shim.js"></script><![endif]-->
+<script src="extend.js"></script>
+<script>
+
+var test = $('test');
+var output = $('output');
+
+var passCount = 0, failCount = 0;
+
+function is(arg1, arg2) {
+	if (arg1 === arg2) {
+		output.innerHTML += arg1 + ' === ' + arg2 + '<br/>';
+		passCount++;
+	} else {
+		output.innerHTML += arg1 + ' !== ' + arg2 + '<br/>';
+		failCount++;
+	}
+}
+
+is(!test, false);
+is(test.localName, 'div');
+is(test.id, 'test');
+is(test.className, '');
+
+test.append('div');
+is(test.childNodes.length, 1);
+is(test.firstChild.localName, 'div');
+is(test.firstChild.id, '');
+is(test.firstChild.className, '');
+
+test.clearChildNodes();
+is(test.childNodes.length, 0);
+
+var a = test.append('div#id');
+is(test.childNodes.length, 1);
+is(a, test.firstChild);
+is(a.localName, 'div');
+is(a.id, 'id');
+is(a.className, '');
+
+var b = test.append('div.class1');
+is(test.childNodes.length, 2);
+is(b, test.childNodes[1])
+is(b.localName, 'div');
+is(b.id, '');
+is(b.className, 'class1');
+
+var c = test.append('div.class1.class2');
+is(test.childNodes.length, 3);
+is(c, test.childNodes[2]);
+is(c.localName, 'div');
+is(c.id, '');
+is(c.className, 'class1 class2');
+
+test.clearChildNodes();
+is(test.childNodes.length, 0);
+
+test.append('div#id.class1');
+is(test.childNodes.length, 1);
+is(test.firstChild.localName, 'div');
+is(test.firstChild.id, 'id');
+is(test.firstChild.className, 'class1');
+
+test.clearChildNodes();
+is(test.childNodes.length, 0);
+
+var nodes = test.appendMany([
+	['div#id.class1.class2'],
+	['div', 'test'],
+	['div', null, { 'a': 'b', 'c': 'd' }]
+]);
+is(test.childNodes.length, 3);
+is(nodes[0], test.childNodes[0]);
+is(nodes[1], test.childNodes[1]);
+is(nodes[2], test.childNodes[2]);
+
+is(nodes[0].localName, 'div');
+is(nodes[0].id, 'id');
+is(nodes[0].className, 'class1 class2');
+
+is(nodes[1].localName, 'div');
+is(nodes[1].innerHTML, 'test');
+
+is(nodes[2].localName, 'div');
+is(nodes[2].innerHTML, '');
+is(nodes[2].getAttribute('a'), 'b');
+is(nodes[2].getAttribute('c'), 'd');
+
+test.clearChildNodes();
+is(test.childNodes.length, 0);
+
+test.append('label', null, { 'class': 'b', 'for': 'd' });
+is(test.childNodes.length, 1);
+is(test.firstChild.localName, 'label');
+is(test.firstChild.innerHTML, '');
+is(test.firstChild.getAttribute('class'), 'b');
+is(test.firstChild.className, 'b');
+is(test.firstChild.getAttribute('for'), 'd');
+is(test.firstChild.htmlFor, 'd');
+
+test.clearChildNodes();
+is(test.childNodes.length, 0);
+
+output.innerHTML += '<hr/>Passed: ' + passCount + ' Failed: ' + failCount;
+
+</script>
+</body>
+</html>
