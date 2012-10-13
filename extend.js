@@ -62,7 +62,7 @@ function createElement(aSelector, aTextContent, aAttributes) {
 	var match = /^([\w-]+)(#[\w-]+)?((\.[\w-]+)*)$/.exec(aSelector);
 	if (!match) {
 		if (console && 'error' in console)
-			console.error('Invalid selector string in call to .ancestor()');
+			console.error('Invalid selector string in call to .createElement()');
 		return null;
 	}
 
