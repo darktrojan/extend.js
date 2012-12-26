@@ -68,14 +68,14 @@ function createElement(aSelector, aTextContent, aAttributes) {
 
 	var element = document.createElement(match[1]);
 	if (match[2])
-    	element.id = match[2].substr(1);
+		element.id = match[2].substr(1);
 
 	var remainder = match[3];
 	var classList = [];
 
 	while (match = /^(\.[\w-]+\b)(.*)$/.exec(remainder)) {
-    	element.classList.add(match[1].substr(1));
-    	remainder = match[2];
+		element.classList.add(match[1].substr(1));
+		remainder = match[2];
 	}
 
 	if (typeof aTextContent == 'string' || typeof aTextContent == 'number')
@@ -88,8 +88,8 @@ function createElement(aSelector, aTextContent, aAttributes) {
 }
 
 Element.prototype.clearChildNodes = function() {
- 	while (this.lastChild)
- 		this.removeChild(this.lastChild);
+	while (this.lastChild)
+		this.removeChild(this.lastChild);
 };
 
 Element.prototype.append = function(aSelector, aTextContent, aAttributes) {
@@ -122,12 +122,12 @@ Element.prototype.ancestor = function(aSelector) {
 	var localName = match[1] ? match[1].toLowerCase() : null;
 	var id = match[2] ? match[2].substr(1) : null;
 
- 	var remainder = match[3];
+	var remainder = match[3];
 	var classList = [];
 
 	while (match = /^(\.[\w-]+\b)(.*)$/.exec(remainder)) {
-    	classList.push(match[1].substr(1));
-    	remainder = match[2];
+		classList.push(match[1].substr(1));
+		remainder = match[2];
 	}
 
 	var element = this.parentNode;
