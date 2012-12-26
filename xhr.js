@@ -48,6 +48,29 @@ var XHR = {
 		request.setRequestHeader('Connection', 'close');
 		request.send(aData);
 	},
+	postFormData: function(aURL, aData, aSuccessCallback, aFailureCallback) {
+		if (!aSuccessCallback)
+			aSuccessCallback = this.defaultCallback;
+		if (!aFailureCallback)
+			aFailureCallback = this.defaultCallback;
+
+		var request = new XMLHttpRequest();
+		request.open('POST', aURL, true);
+		request.onreadystatechange = function() {
+			if (request.readyState == 4) {
+				if (request.status == 200) {
+					aSuccessCallback(request);
+				} else {
+					aFailureCallback(request);
+				}
+			}
+		};
+		request.onerror = function() {
+			aFailureCallback(request);
+		};
+		request.setRequestHeader('Connection', 'close');
+		request.send(aData);
+	},
 	defaultCallback: function(aRequest) {
 		if (aRequest.getResponseHeader('Content-Type').indexOf('application/json') == 0)
 			alert(JSON.parse(aRequest.responseText));
