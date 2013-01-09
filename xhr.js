@@ -1,17 +1,13 @@
 var XHR = {
-	get: function(aURL, aSuccessCallback, aFailureCallback) {
-		if (!aSuccessCallback)
-			aSuccessCallback = this.defaultCallback;
-		if (!aFailureCallback)
-			aFailureCallback = this.defaultCallback;
-
+	_makeRequest: function(aMethod, aURL, aSuccessCallback, aFailureCallback) {
 		var request = new XMLHttpRequest();
-		request.open('GET', aURL, true);
+		request._url = aURL;
+		request.open(aMethod, aURL, true);
 		request.onreadystatechange = function() {
 			if (request.readyState == 4) {
 				if (request.status == 200) {
 					aSuccessCallback(request);
-				} else {
+				} else if (request.status) {
 					aFailureCallback(request);
 				}
 			}
@@ -19,6 +15,15 @@ var XHR = {
 		request.onerror = function() {
 			aFailureCallback(request);
 		};
+		return request;
+	},
+	get: function(aURL, aSuccessCallback, aFailureCallback) {
+		if (!aSuccessCallback)
+			aSuccessCallback = this.defaultCallback;
+		if (!aFailureCallback)
+			aFailureCallback = this.defaultCallback;
+
+		var request = this._makeRequest('GET', aURL, aSuccessCallback, aFailureCallback);
 		request.send(null);
 	},
 	post: function(aURL, aData, aSuccessCallback, aFailureCallback, aContentType) {
@@ -29,20 +34,7 @@ var XHR = {
 		if (!aContentType)
 			aContentType = 'application/x-www-form-urlencoded';
 
-		var request = new XMLHttpRequest();
-		request.open('POST', aURL, true);
-		request.onreadystatechange = function() {
-			if (request.readyState == 4) {
-				if (request.status == 200) {
-					aSuccessCallback(request);
-				} else {
-					aFailureCallback(request);
-				}
-			}
-		};
-		request.onerror = function() {
-			aFailureCallback(request);
-		};
+		var request = this._makeRequest('POST', aURL, aSuccessCallback, aFailureCallback);
 		request.setRequestHeader('Content-Type', aContentType);
 		request.setRequestHeader('Content-Length', aData.length);
 		request.setRequestHeader('Connection', 'close');
@@ -54,27 +46,21 @@ var XHR = {
 		if (!aFailureCallback)
 			aFailureCallback = this.defaultCallback;
 
-		var request = new XMLHttpRequest();
-		request.open('POST', aURL, true);
-		request.onreadystatechange = function() {
-			if (request.readyState == 4) {
-				if (request.status == 200) {
-					aSuccessCallback(request);
-				} else {
-					aFailureCallback(request);
-				}
-			}
-		};
-		request.onerror = function() {
-			aFailureCallback(request);
-		};
+		var request = this._makeRequest('POST', aURL, aSuccessCallback, aFailureCallback);
 		request.setRequestHeader('Connection', 'close');
 		request.send(aData);
 	},
 	defaultCallback: function(aRequest) {
-		if (aRequest.getResponseHeader('Content-Type').indexOf('application/json') == 0)
-			alert(JSON.parse(aRequest.responseText));
-		else
-			alert(aRequest.responseText);
+		var status = aRequest.status;
+		var header = aRequest.getResponseHeader('Content-Type');
+		var response = aRequest.responseText;
+
+		if (status != 200 && console && 'error' in console)
+			console.error('XHR to ' + aRequest._url + ' returned status ' + status);
+
+		if (header && header.indexOf('application/json') == 0)
+			alert(JSON.parse(response));
+		else if (response)
+			alert(response);
 	}
 };
