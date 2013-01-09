@@ -9,8 +9,8 @@ var _loadList = [];
 		if (aEvent.type == 'readystatechange' && document.readyState != 'complete')
 			return;
 
-		if (console && 'log' in console)
-			console.log('Performing load functions on ' + aEvent.type + ' event');
+		// if (console && 'info' in console)
+		// 	console.info('Performing load functions on ' + aEvent.type + ' event');
 
 		window.removeEventListener('DOMContentLoaded', callLoadFunctions, false);
 		document.removeEventListener('readystatechange', callLoadFunctions, false);

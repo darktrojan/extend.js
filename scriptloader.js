@@ -2,6 +2,8 @@ var ScriptLoader = {
 	maybeLoadStyle: function(aTest, aHref) {
 		if (!aTest)
 			return;
+		// if (console && 'info' in console)
+		//	console.info('Loading ' + aHref);
 
 		var tag = document.createElement('link');
 		tag.setAttribute('rel', 'stylesheet');
@@ -14,6 +16,8 @@ var ScriptLoader = {
 			if (aCallback) aCallback();
 			return;
 		}
+		// if (console && 'info' in console)
+		// 	console.info('Loading ' + aSrc);
 
 		var loaded = false;
 		var tag = document.createElement('script');
