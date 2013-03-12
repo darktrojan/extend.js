@@ -58,9 +58,13 @@ var XHR = {
 		if (status != 200 && console && 'error' in console)
 			console.error('XHR to ' + aRequest._url + ' returned status ' + status);
 
-		if (header && header.indexOf('application/json') == 0)
-			alert(JSON.parse(response));
-		else if (response)
-			alert(response);
+		if (response) {
+			if (header && header.indexOf('application/json') == 0)
+				alert(JSON.parse(response));
+			else
+				alert(response);
+		} else if (status != 200) {
+			alert('An error has occurred.');
+		}
 	}
 };
