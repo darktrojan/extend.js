@@ -5,7 +5,7 @@ var XHR = {
 		request.open(aMethod, aURL, true);
 		request.onreadystatechange = function() {
 			if (request.readyState == 4) {
-				if (request.status == 200) {
+				if (request.status >= 200 && request.status < 300) {
 					aSuccessCallback(request);
 				} else if (request.status) {
 					aFailureCallback(request);
