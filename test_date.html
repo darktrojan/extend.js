@@ -54,6 +54,12 @@ is(date3.isSameMonth(date1), false);
 is(date3.isSameMonth(date2), false);
 is(date3.isToday(), true);
 
+is(Date.fromISODate('2014-03-02 01:01:01').valueOf(), new Date(2014, 2, 2, 1, 1, 1).valueOf());
+is(Date.fromISODate('2014-03-02T01:01:01').valueOf(), new Date(2014, 2, 2, 1, 1, 1).valueOf());
+is(Date.fromISODate('2014-03-02 01:01').valueOf(), new Date(2014, 2, 2, 1, 1, 0).valueOf());
+is(Date.fromISODate('2014-03-02T01:01').valueOf(), new Date(2014, 2, 2, 1, 1, 0).valueOf());
+is(Date.fromISODate('2014-03-02').valueOf(), new Date(2014, 2, 2).valueOf());
+
 output.innerHTML += '<hr/>Passed: ' + passCount + ' Failed: ' + failCount;
 
 </script>

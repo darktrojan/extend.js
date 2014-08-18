@@ -7,11 +7,9 @@ Date.monthFullNames =
 
 Date.fromISODate = function(aDate) {
 	if (aDate) {
-		var m = aDate.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})([ T]([0-9]{2}):([0-9]{2}):([0-9]{2}))?/);
-		if (m && m[4]) {
-			return new Date(m[1], m[2] - 1, m[3], m[5], m[6], m[7]);
-		} else if (m) {
-			return new Date(m[1], m[2] - 1, m[3]);
+		var m = aDate.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})([ T]([0-9]{2}):([0-9]{2})(:([0-9]{2}))?)?/);
+		if (m) {
+			return new Date(m[1], m[2] - 1, m[3], m[5] || 0, m[6] || 0, m[8] || 0);
 		}
 	}
 	return null;
