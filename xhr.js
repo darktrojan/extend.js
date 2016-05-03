@@ -1,3 +1,4 @@
+/* exported XHR */
 var XHR = {
 	_makeRequest: function(aMethod, aURL, aSuccessCallback, aFailureCallback) {
 		var request = new XMLHttpRequest();

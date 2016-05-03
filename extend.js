@@ -1,3 +1,4 @@
+/* exported _loadList, $, addHandlers, createElement */
 var _loadList = [];
 
 (function() {
@@ -38,7 +39,6 @@ function addHandlers(aHandlers) {
 	for (var eventType in aHandlers) {
 		for (var selector in aHandlers[eventType]) {
 			var nodes;
-			var m;
 			if (idRegExp.test(selector)) {
 				var node = $(selector.substring(1));
 				if (node) {
@@ -71,7 +71,6 @@ function createElement(aSelector, aTextContent, aAttributes) {
 		element.id = match[2].substr(1);
 
 	var remainder = match[3];
-	var classList = [];
 
 	while (match = /^(\.[\w-]+\b)(.*)$/.exec(remainder)) {
 		element.classList.add(match[1].substr(1));
